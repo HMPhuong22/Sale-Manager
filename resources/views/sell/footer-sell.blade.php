@@ -1,0 +1,1 @@
+<input type="text" class="form-control col-8 custom-input" placeholder="Ghi chú...">

@@ -1,0 +1,15 @@
+.table-soquy .table-condensed {
+    background-color: #E0E0E0;
+}
+
+.table-soquy .table-hover thead {
+    background-color: #A1CCFF;
+}
+
+#scroll-soquy {
+    height: 55vh;
+}
+
+.table-responsive table tbody {
+    overflow-y: auto;
+}

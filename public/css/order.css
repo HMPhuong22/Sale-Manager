@@ -1,0 +1,34 @@
+.left-order{
+    background-color: #D9D9D0 !important;
+    height: 620px;
+}
+.left-order h2{
+    text-align: center;
+}
+
+.right-order{
+    background-color: white;
+}
+
+#box{
+    height: 64vh;
+    overflow-y: auto;
+}
+
+.right-order table thead{
+    background-color: #E6C9A8 !important;
+}
+
+/* scroll bars */
+
+.time{
+    margin-top: 20px;
+    background-color: #50B2E9;
+    padding: 10px;
+    color: white;
+}
+
+.left-order select{
+    border-radius: 10px;
+    height: 2em;
+}

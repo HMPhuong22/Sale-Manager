@@ -1,0 +1,79 @@
+body{
+    background-color: azure;
+    font-family: Arial, sans-serif;
+}
+
+/* header */
+  .navbar {
+    /* width: 100%; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0080ff;
+    color: white;
+    padding-left: 15px;
+  }
+  
+  .navbar-left {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-left input {
+    padding: 8px;
+    margin-right: 10px;
+    border: none;
+    width: 500px;
+    border-radius: 30px;
+  }
+
+  /* main body */
+section .left{
+  width: 95%;
+  height: 250px;
+  overflow-y: auto;
+}
+
+section .right{
+  height: 600px;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+section .success{
+  position: relative;
+  top: 300px;
+}
+
+.infomation-customer{
+  padding: 15px 0px 15px 15px;
+  border-radius: 30px;
+  width: auto;
+  height: auto;
+  /* background-color: white; */
+  margin: 15px 0px 50px 0px;
+}
+
+.infomation-product{
+  padding: 15px 0px 15px 15px;
+  border-radius: 30px;
+  width: auto;
+  height: auto;
+  /* background-color: white; */
+}
+
+.btn-trahang{
+  width: 80%;
+  height: 50px;
+  color: white;
+  border: none;
+  position: relative;
+  top: 250px;
+}
+
+/* footer */
+footer input{
+  border-radius: 30px !important;
+}
