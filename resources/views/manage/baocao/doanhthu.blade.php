@@ -18,29 +18,28 @@
             </form>
         </div>
             {{-- navbar --}}
-    <table class="table table-condensed">
-        <thead>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>Tổng thu</th>
-            <th>Tổng chi</th>
-            <th>Tồn quỹ</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td class="text-success">565.778 <i class="fa fa-arrow-up"></i></td>
-                <td class="text-warning">12.334.222 <i class="fa fa-arrow-down"></i></td>
-                <td class="text-danger">12.900.000</td>
-            </tr>
-        </tbody>
-    </table>
+
+        <div>
+
+            <canvas id="chart2"></canvas>
+        </div>
+
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('chart2');
+        const data1 = JSON.parse('{!! json_encode($totalAmountByLoaiHang) !!}')
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(data1),
+                datasets: [{
+                    label: 'doanh thu',
+                    data: Object.values(data1).map(dataValue => dataValue.value),
+                }]
+            },
+        });
+    </script>
     @endsection

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Category extends Model
 {
     use HasFactory;
+    protected $table = 'tbl_loaihang'; // Tên của bảng trong database
     // insert Category
     public function addCate($data){
         $addDataCategory = DB::table('tbl_loaihang')
@@ -16,7 +17,7 @@ class Category extends Model
         return $addDataCategory;
     }
 
-    // get Category 
+    // get Category
     public function getCate(){
         $getCate= DB::table('tbl_loaihang')
         ->get();
