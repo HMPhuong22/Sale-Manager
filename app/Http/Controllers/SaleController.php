@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\OutputForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,9 +11,6 @@ class SaleController extends Controller
 {
     //
     public function indexSales(){
-        $totalAmount = DB::table('tbl_chitiethdx')
-            ->select(DB::raw('SUM(soluong * giaxuat) as total_amount'))
-            ->first();
         $totalAmountByLoaiHang = [];
         for ($i = 1; $i<=3; $i++) {
             $loaiHang = Category::query()->where("id_loaihang", $i)->first();
@@ -23,9 +21,14 @@ class SaleController extends Controller
                 ->first();
         }
 
+        $allOuputForm = OutputForm::query()
+            ->join('tbl_chitiethdx', 'tbl_chitiethdx.id_hoadonxuat', '=', 'tbl_hoadonxuat.id_hoadonxuat')
+            ->get();
+
+
         return view('manage.baocao.doanhthu', [
-            'totalAmount' => $totalAmount,
             'totalAmountByLoaiHang' => $totalAmountByLoaiHang,
+            'allOuputForm' => $allOuputForm
         ]);
     }
 }
