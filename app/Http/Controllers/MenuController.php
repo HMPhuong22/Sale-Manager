@@ -31,6 +31,7 @@ class MenuController extends Controller
         $dataMenu = [
             'ten_danhmucsanpham' => $request->input('nameMenu')
         ];
+        // dd($dataMenu);
         $this->menu->addMenu($dataMenu);
         return redirect()->back()->with('msgMenu', 'Thêm thành công') ;
     }

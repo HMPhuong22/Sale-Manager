@@ -13,19 +13,21 @@
                             <th>Mã khách hàng</th>
                             <th>Tên khách hàng</th>
                             <th>Số điện thoại</th>
-                            <th>Ngày đặt hàng</th>
-                            <th>Đơn đặt</th>
+                            <th>Tổng số đơn mua</th>
+                            <th>Tổng tiền mua</th>
                         </tr>
                     </thead>    
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>KH0001</td>
-                            <td>Hà Minh Phương</td>
-                            <td>0366589150</td>
-                            <td><a href="#">SP0002</a></td>
-                            <td>12/3/2024</td>
-                        </tr>
+                        @foreach ($getAllCustomer as $key => $item)
+                            <tr>
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->ma_khachhang}}</td>
+                                <td>{{$item->ten_khachhang}}</td>
+                                <td>{{$item->sodienthoai}}</td>
+                                <td>{{$item->countExportInvoice}}</td>
+                                <td>{{number_format($item->sumExportInvoice)}} vnd</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

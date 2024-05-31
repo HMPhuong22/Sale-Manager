@@ -9,11 +9,11 @@
                     @csrf
                     <div class="form-group">
                         <label class="sr-only">Mã sản phẩm</label>
-                        <input type="text" class="form-control" required="" name="idProduct"
+                        <input type="text" class="form-control" required name="idProduct"
                         placeholder="Mã sản phẩm...">
                     </div>
                     @error('idProduct')
-                        <p style="color:red;">{{ $message }}</p>
+                        <small style="color:red;">{{ $message }}</small>
                     @enderror
                     <div class="form-group">
                         <label class="sr-only">Tên sản phẩm</label>

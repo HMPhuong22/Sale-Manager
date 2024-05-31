@@ -6,11 +6,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\select;
+
 class Product extends Model
 {
     use HasFactory;
     protected $table = 'tbl_sanpham';
     protected $primaryKey = 'id_sanpham';
+    public $timestamps = false;
+    protected $fillable = [
+        'id_sanpham',
+        'ma_sanpham',
+        'ten_sanpham',
+        'gia',
+        'soluong',
+        'anh',
+        'mota',
+        'id_loaihang',
+        'id_danhmucsanpham',
+        'id_nhacungcap'
+    ];
     // Lấy danh sách sản phẩm
     public function getAllProduct(){
         $select = [
@@ -26,7 +41,7 @@ class Product extends Model
                         ->select($select)
                         ->join('tbl_dactrungsanpham', $this->table.'.id_sanpham', '=', 'tbl_dactrungsanpham.id_sanpham')
                         ->join('tbl_kichthuoc', 'tbl_dactrungsanpham.id_kichthuoc', '=', 'tbl_kichthuoc.id_kichthuoc')
-                        ->orderBy('ten_sanpham', 'ASC')
+                        ->orderBy('ma_sanpham', 'ASC')
                         ->get();
         return $getProduct; 
     }
@@ -42,6 +57,7 @@ class Product extends Model
     // lẩy ra một sản phẩm
     public function getProduct($id){
         $select = [
+            $this->table.'.id_sanpham',
             'ma_sanpham',
             'anh',
             'ten_sanpham',
@@ -70,23 +86,7 @@ class Product extends Model
                     ->delete();
         return $remove;
     }
-    
-    
-    // Chỉnh sửa sản phẩm
-    // public function editProduct($id, $data){
-    //     $edit = DB::table($this->table)
-    //             ->where( 'id_sanpham', '=', $id)
-    //             ->update( $data );
-    //     return $edit;
-    // }
 
-    // Xóa sản phẩm
-    // public function updateProduct($id, $data){
-    //     $updateProduct = DB::table($this->table)
-    //                     ->where('id_sanpham', '=', $id)
-    //                     ->update($data);
-    //     return  $updateProduct;
-    // }
 
     // Tìm kiếm sản phẩm
     public function searchProduct($key){
@@ -109,5 +109,9 @@ class Product extends Model
                             ->get();
         return $listProductSearch;
         // return response()->json($listProductSearch);
+    }
+
+    public function characteristics(){
+        return $this->belongsTo(Characteristics::class, 'id_sanpham');
     }
 }

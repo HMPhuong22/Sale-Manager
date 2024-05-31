@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-soquy">
-        <h2>Khách hàng</h2>
+        <h2>Đối tác</h2>
         <div class="table-soquy">
             {{-- table content page --}}
             <div id="scroll-soquy" class="table-responsive">  
@@ -18,14 +18,16 @@
                         </tr>
                     </thead>    
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>DN0001</td>
-                            <td>Adidas</td>
-                            <td>0366589150</td>
-                            <td>adidas@gmail.com</td>
-                            <td>444 Đội Cấn, Ba Đình, Hà Nội</td>
-                        </tr>
+                        @foreach ($getDataPartner as $key => $item)
+                            <tr>
+                                <td>{{$key+1}}</td>
+                                <td>{{$item->ma_nhacungcap}}</td>
+                                <td>{{$item->ten_nhacungcap}}</td>
+                                <td>{{$item->hotline}}</td>
+                                <td>{{$item->email}}</td>
+                                <td>{{$item->diachi}}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -41,7 +41,7 @@ class AddProductController extends Controller
 
         // Lấy danh sách hãng sản xuất
         $local = new Local();
-        $listLocals = $local->getAllLocal();
+        $listLocals = $local->getLocalList();
         return view('manage.hanghoa.themsanpham', compact('listCate', 'listMenu', 'listSize', 'listLocals'));
     }
 
@@ -50,11 +50,13 @@ class AddProductController extends Controller
     {
         // validate dữ liệu
         $rules = [
+            'idProduct' => 'unique:tbl_sanpham,ma_sanpham',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'numeric',
             'quantity' => 'numeric'
         ];
         $message =[
+            'unique' => 'Mã sản phẩm đã tồn tại',
             'image' => 'Tải một hình ảnh lên',
             'image.mimes' => 'Hình  ảnh phải có định dạng jpeg, png, gif và svg',
             'image.max' => 'Hình ảnh giới hạn dung lượng là 2MB',
@@ -77,7 +79,7 @@ class AddProductController extends Controller
             $file = time().'.'.$request->file('image')->getClientOriginalExtension();
             // Di chuyển file ảnh đến public
             $request->file('image')->move(public_path('images'), $file);
-            // dd($request->all());
+            dd($file);
             // Lấy dự liệu từ form thêm sản phẩm
             $dataAddProduct = [
                 'ma_sanpham' => $request->input('idProduct'),   

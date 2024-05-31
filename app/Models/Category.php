@@ -10,6 +10,12 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'tbl_loaihang'; // Tên của bảng trong database
+    protected $primaryKey = 'id_loaihang'; // Tên của cột id trong database
+    protected $fillable = [
+        'id_loaihang',
+        'ma_loaihang',
+        'ten_loaihang'
+    ];
     // insert Category
     public function addCate($data){
         $addDataCategory = DB::table('tbl_loaihang')

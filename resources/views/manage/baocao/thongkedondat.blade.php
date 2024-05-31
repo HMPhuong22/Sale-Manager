@@ -4,118 +4,68 @@
     <div class="d-md-flex mt-3">
         <div class="left-order col-3 mb-4">
             <h2>Báo cáo kênh bán hàng</h2>
+            <form action="#" class="search-wrap">
+                <div class="form-group">
+                    <input type="search" class="form-control search bg-white" placeholder="Tìm kiếm theo số điện thoại...">
+                </div>
+            </form>
             <div class="time">
                 <h3>Thời gian</h3>
             </div>
-            <form action="" method="post">
-                <select name="" id="" class="select-order mt-2 w-100">
-                    <option value="">Hôm nay</option>
-                    <option value="">Tháng này</option>
-                    <option value="">Năm này</option>
-                </select>
-            </form>
+            <select name="select-times" id="select-times" class="select-order mt-2 w-100">
+                <option id="thisDay" name="thisDay" value="thisDay">Hôm nay</option>
+                <option id="thisMonth" name="thisMonth" value="thisMonth">Tháng này</option>
+                <option id="thisYear" name="thisYear" value="thisYear">Năm này</option>
+            </select>
         </div>
         <div class="right-order col-9 pl-4">
             <h2>Danh sách đặt hàng</h2>
-            <table class="table table-striped">
-                <thead>
-                    <th class="col-1">&nbsp;</th>
-                    <th class="col-3">Mã đơn hàng</th>
-                    <th class="col-3">Số điện thoại</th>
-                    <th class="col-3">Thời gian đặt</th>
-                    <th class="col-3">Ghi chú</th>
-                </thead>
-            </table>
-        <div id="box">
-            <table class="table table-striped"> 
-                <tbody>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                    <tr>
-                        <td class="col-1">1</td>
-                        <td class="col-3"><a href="#">HD0001</a></td>
-                        <td class="col-3">0366589150</td>
-                        <td class="col-3">01/01/2024</td>
-                        <td class="col-3"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>  
+            <div id="box">
+                <table class="table table-striped">
+                        <tbody id="data-container">
+                            {{-- hiển thị dữ liệu --}}
+                        </tbody>
+                </table>
+            </div>
         </div>
     </div>
-@endsection 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#select-times').change(function() {
+                var selectedOption = $(this).val();
+                // console.log(selectedOption);
+                displayData(selectedOption);
+                // console.log(selectedOption);
+            });
+
+            function displayData(selectedOption) {
+                var data = @json(compact('thisDay', 'thisMonth', 'thisYear'));
+                var selectedData = data[selectedOption];
+                // console.log(data);
+                // Hiển thị dữ liệu tương ứng
+                $('#data-container').empty();
+                // $('#data-container').html(selectedData);
+                $.each(selectedData, function(index, item) {
+                    var row = '<tr>' +
+                        '<td>' + (index + 1) + '</td>' +
+                        '<td>' +
+                        '<form action="{{ route('admin.banhang.trahang-index') }}" method="POST">' +
+                        '@csrf' +
+                        '<input type="hidden" name="mahoadonxuat" value="' + item.id_hoadonxuat + '">' +
+                        '<button type="submit" class="btn btn-link">' + item.ma_hoadonxuat + '</button>' +
+                        '</form>' +
+                        '</td>' +
+                        '<td>' + item.sodienthoai + '</td>' +
+                        '<td>' + item.thoigian + '</td>' +
+                        '</tr>';
+                    $('#data-container').append(row);
+                });
+            }
+
+            // Hiển thị dữ liệu mặc định khi trang được tải
+            displayData('thisDay');
+        });
+    </script>
+@endsection

@@ -19,7 +19,7 @@
 
         <div class="w-100 row ml-5">
             <div class="col-12">
-
+                {{-- thống kê đơn hàng và tiền bán --}}
                 <div id="container-chart1">
                     <canvas id="chart1"></canvas>
                 </div>
@@ -30,17 +30,20 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // tạo biến chứa phần vùng hiển thị dữ liệu
         const containerChart1 = document.getElementById('container-chart1')
         const ctx2 = document.getElementById('chart2');
+        // sử lý sự kiện dropbox
         const selectTypeChart = document.getElementById('select-type-chart')
+        // tạo biến lưu dữ liệu đươc chuyển từ dạng dữ liệu PHP sang JSON
         const dataOutputForm = JSON.parse('{!! json_encode($allOuputForm) !!}')
         const data1 = JSON.parse('{!! json_encode($totalAmountByLoaiHang) !!}')
 
+        // trích xuất chuỗi dầu vào sang dạng số
         function extractNumbersFromString(str) {
             return str.match(/\d+/g).join('');
         }
@@ -169,7 +172,7 @@
                     },
                     title: {
                         position: 'bottom',
-                        display: true,
+                        display: true,  
                         text: `Biểu đồ thống kê doanh thu theo loại sản phẩm`
                     }
                 }
@@ -181,3 +184,4 @@
         }
     </script>
 @endsection
+    

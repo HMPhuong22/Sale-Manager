@@ -10,6 +10,11 @@ class Size extends Model
 {
     use HasFactory;
     protected $table = 'tbl_kichthuoc';
+    protected $primaryKey = 'id_kichthuoc';
+    protected $fillable = [
+        'id_kichthuoc',
+        'ten_kichthuoc'
+    ];
     // Lấy danh sách kích thước
     public function getSize(){
         $get = DB::table($this->table)
@@ -21,5 +26,9 @@ class Size extends Model
         $add = DB::table($this->table)
         ->insert($data);
         return $add;
+    }
+
+    public function characteristic(){
+        return $this->belongsTo(Category::class, 'id_kichthuoc');
     }
 }

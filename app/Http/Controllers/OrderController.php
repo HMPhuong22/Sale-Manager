@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\OutputForm;
 use App\Models\OutputFormDetail;
 use App\Models\Product;
+use App\Models\ListShopping;
+use App\Models\Time;
+
 use Illuminate\Http\Request;
 use Faker\Factory as Faker;
 
@@ -13,7 +16,7 @@ class OrderController extends Controller
     // index
     public function indexOrder()
     {
-        return view('manage.baocao.thongkedondat');
+        // return view('manage.baocao.thongkedondat');
     }
 
     public function addDonXuat()
@@ -42,7 +45,20 @@ class OrderController extends Controller
                 ]);
             }
         }
-
         return response()->json(['message' => 'Fake data generated successfully'], 200);
     }
+
+    public function SelectOptionHandle(Request $request){
+        // lấy dữ liệu về thời gian
+        $time = new Time();
+        $day = $time->GetDay();
+        $month = $time->GetMonth();
+        $year = $time->GetYear();
+        // lấy dữ liệu về hóa dơn theo thời gian
+        $listData = new ListShopping();
+        $thisDay = $listData->GetListInvoiceByDate($day);
+        $thisMonth = $listData->GetListInvoiceByMonth($year, $month );
+        $thisYear = $listData->GetListInvoiceByYear($year);
+        return view('manage.baocao.thongkedondat', compact('thisDay', 'thisMonth', 'thisYear'));
+    }   
 }

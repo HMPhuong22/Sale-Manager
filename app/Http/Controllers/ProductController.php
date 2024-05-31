@@ -46,19 +46,5 @@ class ProductController extends Controller
             return redirect()->back();
         }
     }
-    // load view edit
-    public function getViewEdit(Request $request, $id = 0)
-    {
-        // dd($ma);
-        $getUserDetail = $this->edit->showData($id);
-        if (!empty($getUserDetail[0])) {
-            $request->session()->put('id_sanpham', $id);
-            $getUserDetail = $getUserDetail[0];
-            // get list size
-            $getListSize = $this->size->getSize();
-            $getListCategory = $this->category->getCate();
-            $getListMenu = $this->menu->getAllMenu();
-        }
-        return view('manage.hanghoa.suasanpham', compact("getUserDetail", "getListSize", "getListCategory", "getListMenu"));
-    }
+    
 }

@@ -106,7 +106,7 @@
 
 @section('footer-content')
     <footer class="fixed-bottom m-2 pr-2">
-        <a href="{{ route('admin.quanly.addproduct-index') }}" class="btn btn-primary float-right ml-2">+ Thêm sản phẩm</a>
+        <a href="{{ route('admin.quanly.addlistproduct-index') }}" class="btn btn-primary float-right ml-2">+ Thêm sản phẩm</a>
         <a href="{{ route('admin.quanly.addcategory-index') }}" class="btn btn-primary float-right">+ Thêm phân loại hàng hóa</a>
     </footer>
 @endsection

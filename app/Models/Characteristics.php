@@ -11,6 +11,12 @@ class Characteristics extends Model
     use HasFactory;
 
     protected $table = 'tbl_dactrungsanpham';
+    protected $primaryKey = 'id_dtsp';
+    protected $fillable = [
+        'id_dtsp',
+        'id_sanpham',
+        'id_kichthuoc'
+    ];
     public function addCharateristics($data){
         $add = DB::table($this->table)->insert($data);
         return $add;
@@ -30,5 +36,9 @@ class Characteristics extends Model
         ->where('id_sanpham', $id)
         ->update($data);
         return $update;
+    }
+
+    public function products(){
+        return $this->hasMany(Product::class);
     }
 }
