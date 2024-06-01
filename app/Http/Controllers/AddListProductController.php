@@ -10,45 +10,52 @@ use App\Models\Product;
 use App\Models\Characteristics;
 use App\Models\Local;
 use App\Models\ImportGoods;
-use Nette\Utils\Random;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class AddListProductController extends Controller
 {
-    protected $product;
-    protected $characteristics;
-    protected $import;
-    public function __construct()
-    {
-        $this->product = new Product();
-        $this->characteristics = new Characteristics();
-        $this->import = new ImportGoods();
-    }
-    // index 
     public function indexAddListProduct()
     {
-        $dataListPro = $this->product->getAllProduct();
-        // Lấy danh sách loại sản phẩm
-        $Category = new Category();
-        $listCate = $Category->getCate();
+        $dataListPro = Product::all();
+        $listCate = Category::all();
+        $listMenu = Menu::all();
+        $listSize = Size::all();
+        $listLocals = Local::all();
 
-        // Lấy danh sách danh mục sản phẩm
-        $menu = new Menu();
-        $listMenu = $menu->getAllMenu();
-
-        // Lấy danh sách kích thước sản phẩm
-        $size = new Size();
-        $listSize = $size->getSize();
-
-        // Lấy danh sách hãng sản xuất
-        $local = new Local();
-        $listLocals = $local->getLocalList();
         return view('manage.hanghoa.themdssanpham', compact('dataListPro', 'listCate', 'listMenu', 'listSize', 'listLocals'));
     }
 
-    public function AddListHandle(Request $request)
+    public function addProduct(Request $request)
     {
-        $productList = $request->json()->get('productList');
-        // dd($productList);
+        $productList = json_decode($request->input('products'), true);
+
+        foreach ($productList as $productData) {
+            $product = new Product();
+            $product->name = $productData['name'];
+            $product->code = $productData['code'];
+            $product->price = $productData['price'];
+            $product->quantity = $productData['quantity'];
+            $product->size_id = $productData['size'];
+            $product->category_id = $productData['category'];
+            $product->local_id = $productData['local'];
+            $product->menu_id = $productData['menu'];
+            $product->description = $productData['description'];
+
+            if (isset($productData['image'])) {
+                // Handle file upload
+                $file = $productData['image'];
+                $filePath = $file->store('images', 'public');
+                $product->image = $filePath;
+            }
+
+            try {
+                $product->save();
+            } catch (\Exception $e) {
+                Log::error('Error saving product: ' . $e->getMessage());
+                return response()->json(['message' => 'Error saving product'], 500);
+            }
+        }
+
+        return response()->json(['message' => 'Products added successfully']);
     }
 }

@@ -73,12 +73,14 @@ Route::middleware('Authenticate')->group(function () {
     
             // thêm nhiều sản phẩm
             Route::get('themdanhsachsanpham', [AddListProductController::class, 'indexAddListProduct'])->name('addlistproduct-index');
-            Route::post('themdanhsachsanpham', [AddListProductController::class, 'AddListHandle'])->name('addPro');
+            Route::post('themdanhsachsanpham', [AddListProductController::class, 'AddListHandle'])->name('addProduct');
     
             Route::get('themloaihang', [CategoryController::class, 'indexCategory'])->name('addcategory-index');
             Route::post('themloaihang', [CategoryController::class, 'createCategory'])->name('addcategory-handle');
+
             Route::get('themkichthuoc', [SizeController::class, 'indexSize'])->name('size-index');
             Route::post('themkichthuoc', [SizeController::class, 'addSize']);
+            
             Route::get('themdanhmuchanghoa', [MenuController::class, 'indexMenu'])->name('menu-index');
             Route::post('themdanhmuchanghoa', [MenuController::class, 'createMenu']);
             Route::get('khachhang', [CustomerController::class, 'indexCustomer'])->name('khachhang-index');
