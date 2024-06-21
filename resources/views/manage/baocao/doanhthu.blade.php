@@ -2,6 +2,29 @@
 
 
 @section('content')
+    {{-- STYLE --}}
+    <style>
+        .stat-box {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-box h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        .stat-box p {
+            margin: 0;
+            font-size: 1.5em;
+            color: #007bff;
+        }
+    </style>
+    {{-- END STYLE --}}
     {{-- sidebar --}}
     <div class="d-md-flex mt-3">
         <div class="left-order col-3 mb-4">
@@ -17,9 +40,27 @@
         </div>
         {{-- navbar --}}
 
-        <div class="w-100 row ml-5">
+        <div class="right-order w-100 row ml-5">
             <div class="col-12">
+                {{-- Hiển thị số lượng đơn hàng và tổng doanh thu --}}
+                <h2>Hôm nay</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="stat-box">
+                            <h3>Số lượng đơn hàng</h3>
+                            <p><a id="total-orders" href="{{route('admin.quanly.dodathang-index')}}">{{$totalOrders}}</a></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="stat-box">
+                            <h3>Tổng doanh thu</h3>
+                            <p id="total-revenue">{{number_format($totalRevenue)}} VND</p>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- thống kê đơn hàng và tiền bán --}}
+                <h2>Thống kê chi tiết</h2>
                 <div id="container-chart1">
                     <canvas id="chart1"></canvas>
                 </div>
@@ -34,6 +75,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // const start = document.getElementById('startTime').value;
+        // const end = document.getElementById('endTime').value;
+
+        // console.log(start);
+
         // tạo biến chứa phần vùng hiển thị dữ liệu
         const containerChart1 = document.getElementById('container-chart1')
         const ctx2 = document.getElementById('chart2');
@@ -58,12 +104,16 @@
 
                 switch (groupBy) {
                     case 'month':
-                        key = `${date.getFullYear()}-Th${date.getMonth() + 1}`; // Month in JS is 0-indexed
+                        const m = '2024-05';
+                    key = m; // Month in JS is 0-indexed
+                        // key = `${date.getFullYear()}-Th${date.getMonth() + 1}`; // Month in JS is 0-indexed
                         break;
                     case 'quarter':
                         const month = date.getMonth() + 1;
+                        // const month = '2024-05';
                         const quarter = Math.ceil(month / 3);
                         key = `${date.getFullYear()}-Q${quarter}`;
+                        key = month;
                         break;
                     case 'year':
                         key = date.getFullYear();
@@ -146,7 +196,7 @@
                         title: {
                             position: 'bottom',
                             display: true,
-                            text: `Biểu đồ thống kê doanh thu theo ${typeChart === 'month' ? 'tháng': typeChart === 'quarter' ? 'quý' : 'năm'}`
+                            text: `Biểu đồ thống kê doanh thu theo ${typeChart === 'month' ? 'tháng' : typeChart === 'quarter' ? 'quý' : 'năm'}`
                         }
                     }
                 },
@@ -172,7 +222,7 @@
                     },
                     title: {
                         position: 'bottom',
-                        display: true,  
+                        display: true,
                         text: `Biểu đồ thống kê doanh thu theo loại sản phẩm`
                     }
                 }
@@ -184,4 +234,3 @@
         }
     </script>
 @endsection
-    

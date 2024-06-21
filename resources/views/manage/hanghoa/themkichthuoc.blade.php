@@ -35,7 +35,7 @@
                         @enderror
                         <div class="ml-3 mt-2">
                             <div class="mt-1">
-                                <button class="btn btn-success my-button">Book Now</button>
+                                <button class="btn btn-success my-button">Lưu</button>
                             </div>
                             @if (session('msgSize'))
                                 <p style="color: green;">{{ session('msgSize') }}</p>

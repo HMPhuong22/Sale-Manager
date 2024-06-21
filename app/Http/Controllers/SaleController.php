@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\OutputForm;
+use App\Models\Time;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +12,15 @@ class SaleController extends Controller
 {
     //
     public function indexSales(){
+        // lấy dữ liệu về thời gian
+        $time = new Time();
+        $day = $time->GetDay();
+
+        $getData = new OutputForm();
+        $data = $getData->getDataOrderByDay($day);
+        $totalOrders = $data[0]->total_orders;
+        $totalRevenue = $data[0]->total_revenue;
+
         $totalAmountByLoaiHang = [];
         for ($i = 1; $i<=3; $i++) {
             $loaiHang = Category::query()->where("id_loaihang", $i)->first();
@@ -25,8 +35,7 @@ class SaleController extends Controller
             ->join('tbl_chitiethdx', 'tbl_chitiethdx.id_hoadonxuat', '=', 'tbl_hoadonxuat.id_hoadonxuat')
             ->get();
 
-
-        return view('manage.baocao.doanhthu', [
+        return view('manage.baocao.doanhthu', compact('totalOrders', 'totalRevenue') ,[
             'totalAmountByLoaiHang' => $totalAmountByLoaiHang,
             'allOuputForm' => $allOuputForm
         ]);

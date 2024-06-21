@@ -102,7 +102,7 @@
                     </div>
                     <div class="form-group">
                         <label class="sr-only">Số lượng</label>
-                        <input type="text" name="newQuantity" class="form-control" required=""
+                        <input type="text" name="newQuantity" class="form-control" 
                             value="{{ old('newQuantity') ?? $getUserDetail->soluong }}">
                         @error('newQuantity')
                             <small style="color: red;">{{ $message }}</small>

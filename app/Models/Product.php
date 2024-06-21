@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
-use function Laravel\Prompts\select;
+use App\Models\ImportInvoiceDetail;
 
 class Product extends Model
 {
@@ -38,7 +37,7 @@ class Product extends Model
           'soluong'  
         ];  
         $getProduct = DB::table($this->table)
-                        ->select($select)
+                        ->select($this->table.'.*', 'tbl_kichthuoc.ten_kichthuoc')
                         ->join('tbl_dactrungsanpham', $this->table.'.id_sanpham', '=', 'tbl_dactrungsanpham.id_sanpham')
                         ->join('tbl_kichthuoc', 'tbl_dactrungsanpham.id_kichthuoc', '=', 'tbl_kichthuoc.id_kichthuoc')
                         ->orderBy('ma_sanpham', 'ASC')
@@ -111,7 +110,38 @@ class Product extends Model
         // return response()->json($listProductSearch);
     }
 
+    // lấy kích thước của sản phẩm
+    public function getSize($id){
+        $size = DB::table($this->product)
+        ->select('tbl_kichthuoc.kichthuoc')
+        ->join('tbl_dactrungsanpham', $this->id_sanpham, '=', 'tbl_dactrungsanpham.id_sanpham')
+        ->join('tbl_kichthuoc', 'tbl_dactrungsanpham.id_kichthuoc', '=', 'tbl_kichthuoc.id_kichthuoc')
+        ->where($this->table.'.id_sanpham', $id)
+        ->get();
+
+        return $size;
+    }
+
+    // tổng lượng hàng tồn kho
+    public function getInventory(){
+        $sql = "SELECT sum(soluong) as total_quantity_product
+        FROM " . $this->table;
+
+        $results = DB::select($sql);
+        return $results;
+    }
+
     public function characteristics(){
-        return $this->belongsTo(Characteristics::class, 'id_sanpham');
+        return $this->hasMany(Characteristics::class);
+    }
+
+    // Một sản phẩm có thể có nhiều chi tiết hóa đơn nhập
+    public function importInvoiceDetails()
+    {
+        return $this->hasMany(ImportInvoiceDetail::class);
+    }
+
+    public function exportVoiceDetails(){
+        return $this->hasMany(OutputFormDetail::class);
     }
 }

@@ -63,15 +63,22 @@ class Customer extends Model
   }
 
   // lấy danh sách khách hàng và tổng đơn hàng khách đặt
-  public function getCustomerAndSumInvoice(){
+  public function getCustomerAndSumInvoice()
+  {
     $get = DB::table($this->table)
-    ->join('tbl_hoadonxuat', $this->table.'.id_khachhang', '=', 'tbl_hoadonxuat.id_khachhang')
-    ->join('tbl_chitiethdx', 'tbl_hoadonxuat.id_hoadonxuat', '=', 'tbl_chitiethdx.id_hoadonxuat')
-    ->select($this->table.'.*', 
-              DB::raw('count('.'tbl_hoadonxuat.id_khachhang'.') as countExportInvoice'), 
-              DB::raw('sum('.'tbl_chitiethdx.soluong*tbl_chitiethdx.giaxuat'.') as sumExportInvoice'))
-    ->groupBy($this->table.'.id_khachhang', $this->table.'.ten_khachhang',$this->table.'.sodienthoai', $this->table.'.ma_khachhang')
-    ->get();
+      ->join('tbl_hoadonxuat', $this->table . '.id_khachhang', '=', 'tbl_hoadonxuat.id_khachhang')
+      ->join('tbl_chitiethdx', 'tbl_hoadonxuat.id_hoadonxuat', '=', 'tbl_chitiethdx.id_hoadonxuat')
+      ->select(
+        $this->table . '.*',
+        DB::raw('count(' . 'tbl_hoadonxuat.id_khachhang' . ') as countExportInvoice'),
+        DB::raw('sum(' . 'tbl_chitiethdx.soluong*tbl_chitiethdx.giaxuat' . ') as sumExportInvoice')
+      )
+      ->groupBy($this->table . '.id_khachhang', $this->table . '.ten_khachhang', $this->table . '.sodienthoai', $this->table . '.ma_khachhang')
+      ->get();
     return $get;
+  }
+
+  public function OutputForm(){
+    return $this->hasMany(OutputForm::class, 'id_khachhang');
   }
 }

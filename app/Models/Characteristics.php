@@ -12,10 +12,12 @@ class Characteristics extends Model
 
     protected $table = 'tbl_dactrungsanpham';
     protected $primaryKey = 'id_dtsp';
+    public $timestamps = false;
     protected $fillable = [
         'id_dtsp',
         'id_sanpham',
-        'id_kichthuoc'
+        'id_kichthuoc',
+        'id_mausac'
     ];
     public function addCharateristics($data){
         $add = DB::table($this->table)->insert($data);
@@ -39,6 +41,14 @@ class Characteristics extends Model
     }
 
     public function products(){
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Product::class);
+    }
+
+    public function size(){
+        return $this->belongsTo(Size::class);
+    }
+
+    public function color(){
+        return $this->belongsTo(Color::class);
     }
 }

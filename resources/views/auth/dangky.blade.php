@@ -31,8 +31,8 @@
                                 @csrf
                                 <h3 class="fw-large mb-3 pb-3" style="text-align: center; font-size:3em;">Thời trang
                                 </h3>
-                                <div class="fw-normal mb-3 pb-3" style="text-align: center;"><a href="">Chọn
-                                        ngành hàng khác</a></div>
+                                {{-- <div class="fw-normal mb-3 pb-3" style="text-align: center;"><a href="{{route('nganhhang-index')}}">Chọn
+                                        ngành hàng khác</a></div> --}}
 
                                 <div class="form-outline mb-4">
                                     <input type="text" id="form2Example18" placeholder="Tên đăng nhập"

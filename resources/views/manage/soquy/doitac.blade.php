@@ -21,8 +21,8 @@
                         @foreach ($getDataPartner as $key => $item)
                             <tr>
                                 <td>{{$key+1}}</td>
-                                <td>{{$item->ma_nhacungcap}}</td>
-                                <td>{{$item->ten_nhacungcap}}</td>
+                                <td>{{$item->ma_nhaphanphoi}}</td>
+                                <td>{{$item->ten_nhaphanphoi}}</td>
                                 <td>{{$item->hotline}}</td>
                                 <td>{{$item->email}}</td>
                                 <td>{{$item->diachi}}</td>

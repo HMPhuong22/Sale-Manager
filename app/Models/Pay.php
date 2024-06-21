@@ -46,7 +46,7 @@ class Pay extends Model
         return $dataDetails;
     }
 
-    // update lại tổng số lượng sản phẩm 
+    // update lại tổng số lượng sản phẩm
     public function updateNewQuantity($idProduct, $newQuantity){
         $update = DB::table('tbl_sanpham')
         ->where('id_sanpham', $idProduct)
@@ -63,15 +63,16 @@ class Pay extends Model
         return ($dataExportInvoice);
     }
 
-    // lấy thông tin chi tiết hóa đơn xuất 
+    // lấy thông tin chi tiết hóa đơn xuất
     public function getExportInvoiceDetails($idExportInvoice){
         $data = [
-            $this->tableDetails.'.giaxuat', 
-            $this->tableDetails.'.soluong', 
+            $this->tableDetails.'.giaxuat',
+            $this->tableDetails.'.soluong',
             'tbl_sanpham.ten_sanpham',
             $this->table.'.tonggiaxuat',
             $this->table.'.tongsoluong',
-        ];  
+            'tbl_sanpham.id_sanpham',
+        ];
         $dataExportInvoiceDetails = DB::table($this->tableDetails)
         ->select($data)
         ->join($this->table, $this->tableDetails.'.id_hoadonxuat', '=', $this->table.'.id_hoadonxuat')
@@ -80,7 +81,7 @@ class Pay extends Model
         ->join('tbl_kichthuoc', 'tbl_dactrungsanpham.id_kichthuoc', '=', 'tbl_kichthuoc.id_kichthuoc')
         ->where($this->table.'.id_hoadonxuat', $idExportInvoice)
         ->get();
-       
+
         return $dataExportInvoiceDetails;
     }
 
@@ -90,7 +91,7 @@ class Pay extends Model
         ->select('kh.*')
         ->join('tbl_khachhang AS kh', 'hd.id_khachhang', '=', 'kh.id_khachhang')
         ->where('hd.id_hoadonxuat', $idExportInvoice)
-        ->get();
+        ->first();
     return $dataCustomer;
     }
 }

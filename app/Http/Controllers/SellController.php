@@ -56,10 +56,10 @@ class SellController extends Controller
     {
         // lấy sản phẩm theo id tương ứng
         $product = DB::table('tbl_sanpham')
-        ->join('tbl_dactrungsanpham', 'tbl_sanpham'.'.id_sanpham', '=', 'tbl_dactrungsanpham.id_sanpham')
-        ->join('tbl_kichthuoc', 'tbl_dactrungsanpham.id_kichthuoc', '=', 'tbl_kichthuoc.id_kichthuoc')
-        ->where('tbl_sanpham'.'.id_sanpham', $id)
-        ->first();
+            ->join('tbl_dactrungsanpham', 'tbl_sanpham' . '.id_sanpham', '=', 'tbl_dactrungsanpham.id_sanpham')
+            ->join('tbl_kichthuoc', 'tbl_dactrungsanpham.id_kichthuoc', '=', 'tbl_kichthuoc.id_kichthuoc')
+            ->where('tbl_sanpham' . '.id_sanpham', $id)
+            ->first();
         // $product = $this->pro->getProduct($id);
         // dd($product);
         if ($product != null) {
@@ -143,7 +143,7 @@ class SellController extends Controller
             $totalQuantityPay = Session::get('Sell')->totalQuatity;
             $dataInvoice = [
                 'tonggiaxuat' => $totalPriceDiscount,
-                'tonggiagiam' => $request->input('discount'), 
+                'tonggiagiam' => $request->input('discount'),
                 'thoigian' => $this->time->getTime(),
                 'ma_hoadonxuat' => $this->export->makeIdInvoice(),
                 'tongsoluong' => $totalQuantityPay,
@@ -154,11 +154,11 @@ class SellController extends Controller
             $this->export->saveExportInvoice($dataInvoice);
             // lấy id của hóa đơn xuất vừa mới tạo
             $idNewInvoice = $this->export->getIdNewest();
-            
+
             // thêm mới bảng chi tiết hóa đơn xuất
             $listProductInInvoice = Session::get('Sell');
-            foreach($listProductInInvoice->products as $item){
-                $id = "CTHDX-".Uuid::uuid4()->toString();
+            foreach ($listProductInInvoice->products as $item) {
+                $id = "CTHDX-" . Uuid::uuid4()->toString();
                 $quantity = $item['quanty'];
                 $price = $item['productInf']->gia;
                 $idProduct = $item['productInf']->id_sanpham;
@@ -175,7 +175,10 @@ class SellController extends Controller
                 $newQuantity = $item['productInf']->soluong - $quantity;
                 $this->export->updateNewQuantity($idProduct, $newQuantity);
             }
+
+            // $request->Session()->flush();
+            // return redirect()->back();
+            return redirect()->route('admin.banhang.print-invoice-index');
         }
-        return redirect()->route('admin.banhang.print-invoice-index');
     }
 }

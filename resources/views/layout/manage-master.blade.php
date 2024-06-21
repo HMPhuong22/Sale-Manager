@@ -26,7 +26,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css\addcate.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css\size.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css\menu.css') }}">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    {{-- <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"> --}}
+    {{-- Overview Style --}}
+    <link rel="stylesheet" href="{{ asset('css/overview/css/style.css') }}">
+
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </head>
@@ -45,7 +49,7 @@
         <nav class="navbar navbar-expand-sm bg-primary">
             <ul class="navbar-nav d-flex align-items-center justify-content-end" style="height: 100%">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ route('admin.quanly.manage-index') }}"
+                    <a class="nav-link text-white" href="{{ route('admin.quanly.overview-index') }}"
                         style="font-size: 1.5em"><i class="fas fa-eye"></i>
                         Tổng
                         quan</a>
@@ -60,8 +64,10 @@
                     <a class="dropbtn nav-link text-white" href=""
                         style="font-size: 1.5em"><i class="fas fa-dollar-sign"></i> Đối tác</a>
                         <div class="dropdown-content">
-                            <a href="{{ route('admin.quanly.khachhang-index') }}">Khách hàng</a>
-                            <a href="{{ route('admin.quanly.doitac-index') }}">Đối tác</a>
+                            {{-- <a href="{{ route('admin.quanly.khachhang-index') }}">Khách hàng</a> --}}
+                            <button class="dropdown-item" onclick="window.location.href='{{ route('admin.quanly.khachhang-index') }}'">Khách hàng</button>
+                            {{-- <a href="{{ route('admin.quanly.doitac-index') }}">Đối tác</a> --}}
+                            <button class="dropdown-item" onclick="window.location.href='{{ route('admin.quanly.doitac-index') }}'">Đối tác</button>
                         </div>
                 </li>
                 <li class="dropdown nav-item ml-3">
@@ -69,8 +75,8 @@
                             class="fas fa-chart-bar"></i>
                         Báo cáo</a>
                     <div class="dropdown-content">
-                        <a href="{{ route('admin.quanly.dodathang-index') }}">Thống kê đơn đặt</a>
-                        <a href="{{ route('admin.quanly.doanhthu-index') }}">Doanh thu</a>
+                        <button class="dropdown-item" onclick="window.location.href='{{ route('admin.quanly.dodathang-index') }}'">Đơn bán</button>
+                        <button class="dropdown-item" onclick="window.location.href='{{ route('admin.quanly.doanhthu-index') }}'">Doanh thu</button>
                     </div>
                 </li>
             </ul>

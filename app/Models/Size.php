@@ -29,6 +29,6 @@ class Size extends Model
     }
 
     public function characteristic(){
-        return $this->belongsTo(Category::class, 'id_kichthuoc');
+        return $this->hasMany(Characteristics::class);
     }
 }

@@ -32,8 +32,16 @@
                             style="color: {{ $item->soluong <= 0 ? 'red' : 'black' }}">{{ $item->soluong }}</span></td>
                     <td>{{ number_format($item->gia) }} VND</td>
                     {{-- <td><a href="{{route('admin.banhang.add-sell', ['id' => $item->id_sanpham]) }}"><i class="fas fa-plus"></i></a></td> --}}
-                    <td class="add"><a onclick="AddSell({{ $item->id_sanpham }})" href="javascript:"><i
-                                class="fas fa-plus"></i></a>
+                    <td class="add">
+                        @if ($item->soluong <= 0)
+                            <a href="javascript:void(0)" class="disabled" style="pointer-events: none; color: grey;">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        @else
+                            <a onclick="AddSell({{ $item->id_sanpham }})" href="javascript:;">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        @endif
                     </td>
 
                     {{-- <td><input class="checkPro" name="checkPro[]" type="checkbox" value="{{ $item->id_sanpham }}"></td> --}}
@@ -69,8 +77,7 @@
                 // console.log($(this).data('id'));
                 $.ajax({
                     url: "{{ route('admin.banhang.delete-item-sell', ':id') }}".replace(':id', $(this)
-                        .data(
-                            'id')),
+                        .data('id')),
                     type: 'GET',
                 }).done(function(result) {
                     // console.log($(this).data('id'));
@@ -97,7 +104,7 @@
     <div class="container mt-2 mb-2">
         <div class="row justify-content-end">
             <div class="col">
-                <h3>Đơn hàng</h3>
+                <h3 class="font-weight-bold">Đơn hàng</h3>
             </div>
             <div class="col-auto row mr-5">
             </div>
@@ -164,30 +171,14 @@
                 @foreach (Session::get('Sell')->products as $key => $item)
                     <tr>
                         <input type="hidden" name="id-product" value="{{ $item['productInf']->id_sanpham }}">
-                        <td name="id-product">{{ $item['productInf']->ten_sanpham }} - {{$item['productInf']->ten_kichthuoc}}</td>
+                        <td name="id-product">{{ $item['productInf']->ten_sanpham }} -
+                            {{ $item['productInf']->ten_kichthuoc }}</td>
                         {{-- <td>{{$item['productInf']->id_kichthuoc}}</td> --}}
                         <td name="price-product">{{ number_format($item['productInf']->gia) }}</td>
                         <td class="product-details">
                             <input id="quantity" name="quantity-porduct" type="number" min="1"
                                 max="{{ $item['productInf']->soluong }}" style="width: 40%" value="{{ $item['quanty'] }}"
                                 required>
-                            {{-- script xử lý sự kiện nhập số lượng sản phẩm --}}
-                            <script>
-                                const quantityInput = document.getElementById('quantity');
-                                const availableStock = {{ $item['productInf']->soluong }};
-
-                                quantityInput.addEventListener('input', function() {
-                                    const enterQuantity = parseInt(this.value);
-                                    if (enterQuantity > availableStock) {
-                                        this.value =
-                                        availableStock; // Nếu số lượng nhập lớn hơn sớ lượng tồn kho thì giá trị của input thay bằng số lượng tồn kho
-                                    }
-                                    ifelse(enterQuantity < 1) {
-                                        this.value = 1; // Nếu số lượng nhập nhở hơn 0 thì số lượng của input thay bằng 1
-                                    }
-                                });
-                            </script>
-                            {{-- end  --}}
                         </td>
                         <td><span name="total-product">{{ number_format($item['gia']) }}</span></td>
                         <td class="si-close">
@@ -206,7 +197,55 @@
     {{-- lấy dữ liệu thanh toán --}}
     <form action="{{ route('admin.banhang.save-pay') }}" method="post">
         @csrf
-        <div class="infomation-customer">
+        <div class="col-md-12 mt-5 font-weight-bold">
+            <div class="form-group">
+                <label for="customerName">Tên khách hàng:</label>
+                <input type="text" class="form-control" id="customerName" name="name-customer" required>
+            </div>
+            <div class="form-group">
+                <label for="customerPhone">Số điện thoại:</label>
+                <input type="text" class="form-control" id="customerPhone" name="phonenumber-customer" required>
+            </div>
+
+            @if (Session::has('Sell') != null)
+                <div class="form-group">
+                    <label for="totalQuantity" class="font-weight-bold">Tổng số lượng:</label>
+                    {{-- <input type="number" class="form-control" id="total-quantity-show" value="{{ Session::get('Sell')->totalQuatity }}" readonly> --}}
+                    <span id="total-quantity-show">{{ Session::get('Sell')->totalQuatity }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="totalPrice" class="font-weight-bold">Tổng giá:</label>
+                    {{-- <input type="text" class="form-control" id="total-price-show" value="{{ Session::get('Sell')->totalPrice }}" readonly> --}}
+                    <span id="total-price-show">{{ Session::get('Sell')->totalPrice }}</span>
+                </div>
+            @else
+                <div class="form-group">
+                    <label for="totalQuantity" class="font-weight-bold">Tổng số lượng:</label>
+                    <span id="total-quantity-show">0</span>
+                </div>
+                <div class="form-group">
+                    <label for="totalPrice" class="font-weight-bold">Tổng giá:</label>
+                    <span id="total-price-show">0</span>
+                </div>
+            @endif
+
+            <div class="form-group font-weight-bold">
+                <label for="totalDiscount">Tổng giá giảm:</label>
+                <input type="text" name="discount" class="form-control" id="totalDiscount" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="cod" class="font-weight-bold">COD:</label>
+                @if (Session::has('Sell') != null)
+                    <span id="total-price-show">{{ number_format(Session::get('Sell')->totalPrice) }} vnđ</span>
+                @else
+                    <span id="total-price-show">0</span>
+                @endif
+            </div>
+            <button type="submit" id="salesButton" class="btn btn-success btn-block">Bán hàng</button>
+        </div>
+
+        {{-- <div class="infomation-customer">
             <table class="table table-bordered" id="selectedProducts">
                 <tr>
                     <td>Tên khách hàng: </td>
@@ -217,13 +256,13 @@
                     <td><input type="text" name="phonenumber-customer" required></td>
                 </tr>
             </table>
-        </div>
+        </div> --}}
 
-        <div class="infomation-product">
-            <table class="table table-bordered">
-                {{-- thanh toán đơn hàng --}}
-                @if (Session::has('Sell') != null)
-                    <tr>
+        {{-- <div class="infomation-product">
+            <table class="table table-bordered"> --}}
+        {{-- thanh toán đơn hàng --}}
+        {{-- @if (Session::has('Sell') != null) --}}
+        {{-- <tr>
                         <td>Tổng số lượng: </td>
                         <td><span id="total-quantity-show">{{ Session::get('Sell')->totalQuatity }}</span></td>
                     </tr>
@@ -247,9 +286,9 @@
                     <td><input name="discount" type="text" value="0"></td>
                 </tr>
             </table>
-        </div>
+        </div> --}}
 
-        <div class="container">
+        {{-- <div class="container">
             <div class="">
                 <tbale>
                     <tr>
@@ -269,6 +308,6 @@
                     </tr>
                 </tbale>
             </div>
-        </div>
+        </div> --}}
     </form>
 @endsection

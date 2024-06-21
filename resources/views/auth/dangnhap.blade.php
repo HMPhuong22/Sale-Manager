@@ -33,10 +33,6 @@
             <label for="pass"><b>Mật khẩu</b></label>
             <input type="password" placeholder="Nhập mật khẩu..." name="pass" required>
 
-            <label>
-                <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Nhớ mật khẩu
-            </label>
-
             <p><a href="{{ route('dangky') }}" style="color:dodgerblue">Tạo tài khoản mới ở đây.</a></p>
 
             <div class="clearfix">
@@ -45,7 +41,7 @@
                 <button type="submit" class="signupbtn" name="sell" value="sell">Bán hàng</button>
             </div>
             @if (session('msg'))
-                <p style="color: red">{{session('msg')}}</p>
+                <p style="color: green">{{session('msg')}}</p>
             @endif
         </div>
     </form>

@@ -11,6 +11,10 @@ class Menu extends Model
     use HasFactory;
     protected $table = 'tbl_danhmucsanpham';
     protected $primaryKey = 'id_danhmucsanpham';
+    protected $fillable = [
+        'id_danhmucsanpham',
+        'ten_danhmucsanpham'
+    ];
 
     // Lấy ra danh sách danh mục hàng hóa
     public function getAllMenu(){

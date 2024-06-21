@@ -34,7 +34,6 @@ class PrintInvoiceController extends Controller
         ];
         // dd($test);
         $pdf = Pdf::loadView('sell.PrintInvoice', $dataExportInvoice);
-        $request->Session()->flush();
         return $pdf->stream('invoicePDF.pdf');
     }
 }

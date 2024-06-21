@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Size;
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\Characteristics;
 use App\Models\Local;
@@ -42,7 +43,11 @@ class AddProductController extends Controller
         // Lấy danh sách hãng sản xuất
         $local = new Local();
         $listLocals = $local->getLocalList();
-        return view('manage.hanghoa.themsanpham', compact('listCate', 'listMenu', 'listSize', 'listLocals'));
+
+        // Lấy danh sách màu sắc của sản phẩm
+        $listColor = Color::all();
+
+        return view('manage.hanghoa.themsanpham', compact('listCate', 'listMenu', 'listSize', 'listLocals', 'listColor'));
     }
 
     // thêm sản phẩm
@@ -50,12 +55,12 @@ class AddProductController extends Controller
     {
         // validate dữ liệu
         $rules = [
-            'idProduct' => 'unique:tbl_sanpham,ma_sanpham',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'price' => 'numeric',
-            'quantity' => 'numeric'
+            'idProduct' => 'required|unique:tbl_sanpham,ma_sanpham',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'price' => 'required|numeric',
         ];
         $message =[
+            'required' => 'Không được để trống',
             'unique' => 'Mã sản phẩm đã tồn tại',
             'image' => 'Tải một hình ảnh lên',
             'image.mimes' => 'Hình  ảnh phải có định dạng jpeg, png, gif và svg',
@@ -75,60 +80,48 @@ class AddProductController extends Controller
             $idSize = $_POST['size'];
             // Lấy id của hãng sản xuất
             $idLocal = $_POST['local'];
-            // Địng dạng tên file ảnh
+            // Lấy id màu sắc
+            $idColor = $_POST['color'];
+            
+            // Địng dạng tên file ảnh   
             $file = time().'.'.$request->file('image')->getClientOriginalExtension();
             // Di chuyển file ảnh đến public
             $request->file('image')->move(public_path('images'), $file);
-            dd($file);
+
+            // lấy id sản phẩm
+            $idProduct = $request->input('idProduct');
+
+            // lấy tên size và màu sắc theo id
+            $s = Size::find($idSize);
+            $nameSize = $s->ten_kichthuoc;
+            $c = Color::find($idColor);
+            $nameColor = $c->ma_mausac;
+
             // Lấy dự liệu từ form thêm sản phẩm
-            $dataAddProduct = [
-                'ma_sanpham' => $request->input('idProduct'),   
+            Product::create([
+                'ma_sanpham' => $idProduct.'-'.$nameSize.'-'.$nameColor,   
                 'ten_sanpham' => $request->input('nameProduct'),
                 'gia' => $request->input('price'),
-                'soluong' => $request->input('quantity'),
                 'anh' => $file,
                 'mota' => $request->input('describe'),
                 'id_loaihang' => $idCategory,
                 'id_danhmucsanpham' => $idMenu,
                 'id_nhacungcap' => $idLocal
-            ];
-            $this->product->addProduct($dataAddProduct);
-            // lấy ID của sản phẩm mới được tạo 
-            $check = $request->input('idProduct');
-            $idNewProduct = $this->product->getIdProduct($check);
+            ]);
+            // $this->product->addProduct($dataAddProduct);
+
+            // lấy ID của sản phẩm mới được tạo
+            $latestProduct = Product::latest('id_sanpham')->first(); 
+            $getLatestProductId = $latestProduct->id_sanpham;
+            // dd($getLatestProductId);
 
             // Cập nhật bảng đặc trung sản phẩm
-            $dataCharacteristics = [
-                'id_sanpham' => $idNewProduct,
+            Characteristics::create([
+                'id_sanpham' => $getLatestProductId,
                 'id_kichthuoc' => $idSize,
-            ];
-            $this->characteristics->addCharateristics($dataCharacteristics);
-
-            // Cập nhật bảng chi tiết hóa đơn nhập
-            // Tạo mã hóa đơn nhập ngẫu nhiên
-            $MA_CHITIETHDN = time().Str::random(5);
-            $dataImportDetail = [
-                'ma_chitiethdn' => $MA_CHITIETHDN,
-                'soluong' => $request->input('quantity'),
-                'gianhap' => $request->input('price'),
-                'id_sanpham' => $idNewProduct
-            ];
-            $this->import->addDataToTableDetail($dataImportDetail);
-
-            // Lấy ID chi tiết hóa đơn nhập mới tạo được
-            $idNewImportDetail = $this->import->getIdImportDetail($MA_CHITIETHDN);
-            
-            // Cập nhật bảng hóa đơn nhập
-            // Thiết lập tổng giá
-            $price = $request->input('price');
-            $quantity = $request->input('quantity');
-            $totalPriceImport = $this->import->totalPriceImport($price, $quantity);
-            $dataImport = [
-                'tonggianhap' => $totalPriceImport,
-                'thoigian' => now(),
-                'id_chitiethdn' => $idNewImportDetail
-            ];
-            $this->import->addDataImport($dataImport);
+                'id_mausac' => $idColor,
+            ]);
+            // $this->characteristics->addCharateristics($dataCharacteristics);
             return redirect()->back()->with('msgAddPro', 'Thêm sản phẩm thành công');
         }
     }

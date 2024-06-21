@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Partner extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_nhacungcap';
+    protected $table = 'tbl_nhaphanphoi';
     // Get all local
     public function getAllPartnerl(){
         $get_partner = DB::table($this->table)
